@@ -178,7 +178,11 @@ class Configfile(object):
 
 
 class AdminRepository(Configfile):
-    def __init__(self, path,  keydir_name='keys'):
+    """
+        conffile_name: alternative name of the configfile to read. default is conf/gitolite.conf
+                        path is relative to `path`
+    """
+    def __init__(self, path,  keydir_name='keys', conffile_name=None):
         Configfile.__init__(self)
 
         self._repo_path = path
@@ -186,10 +190,14 @@ class AdminRepository(Configfile):
         if not os.path.isdir(self._key_path):
             os.mkdir(self._key_path)
 
-        conf_dir = os.path.join(path, "conf")
-        if not os.path.isdir(conf_dir):
-            os.mkdir(conf_dir)
-        self._user_repo_config = os.path.join(conf_dir, "gitolite.conf")
+        if conffile_name:
+            self._user_repo_config = os.path.join(path, conffile_name)
+            os.path.makedirs(os.path.dirname(self._user_repo_config))
+        else:
+            conf_dir = os.path.join(path, "conf")
+            if not os.path.isdir(conf_dir):
+                os.mkdir(conf_dir)
+            self._user_repo_config = os.path.join(conf_dir, "gitolite.conf")
 
         if os.path.isfile(self._user_repo_config):
             self.parse(self._user_repo_config)
