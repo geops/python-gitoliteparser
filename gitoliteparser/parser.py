@@ -9,9 +9,10 @@ except ImportError:
 
 # regular-expressions copied from gitolite source
 # https://github.com/sitaramc/gitolite/blob/master/src/lib/Gitolite/Conf.pm
-_re_group = re.compile('^(@\S+) = (.*)')
-_re_repo = re.compile('repo (.*)')
-_re_perm = re.compile('^(-|C|R|RW\+?(?:C?D?|D?C?)M?) (.* )?= (.+)')
+_re_part_name = "[\w@\-_]+"
+_re_group = re.compile('^(@\S+)\s*=\s*(\w*)')
+_re_repo = re.compile('repo\s+([\w\-_]*)')
+_re_perm = re.compile('^(-|C|R|RW\+?(?:C?D?|D?C?)M?)\s*(\w+)?\s*=\s*('+_re_part_name+')')
 
 class ParseError(Exception):
     line = None
