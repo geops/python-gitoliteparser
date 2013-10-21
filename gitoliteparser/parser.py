@@ -192,7 +192,8 @@ class AdminRepository(Configfile):
 
         if conffile_name:
             self._user_repo_config = os.path.join(path, conffile_name)
-            os.path.makedirs(os.path.dirname(self._user_repo_config))
+            if not os.path.isdir(os.path.dirname(self._user_repo_config)):
+                os.makedirs(os.path.dirname(self._user_repo_config))
         else:
             conf_dir = os.path.join(path, "conf")
             if not os.path.isdir(conf_dir):
